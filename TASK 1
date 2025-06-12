@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    
+    <body bgcolor="#a7f542">
+        <h1>Website Cost Table:-
+        <br>
+        <table border="2"> 
+            <tr width="50px" height="50px">
+                <th>What's the cost?</th>
+                <th>How much is it?</th>
+                <th>One-off, monthly or annual?</th>
+            </tr>
+            <tr>
+                <td>Domain name</td>
+                <td>$12</td>
+            <td>Annual</td>
+            </tr>
+            <tr>
+                <td>Hosting</td>
+                <td>$3.95-$34.95</td>
+            <td>Monthly</td>
+            </tr>
+            <tr>
+                <td>Pre-made Themes</td>
+                <td>$0-$200</td>
+            <td>One-Off</td>
+            </tr>
+            <tr>
+                <td>Plugins</td>
+                <td>$0-$1000</td>
+            <td>A mixture</td>
+            </tr>
+            <tr>
+                <td>Security</td>
+                <td>$50-$550</td>
+            <td>A mixture</td>
+            </tr>
+            <tr>
+                <td>Developer Fees</td>
+                <td>$0-$1000</td>
+            <td>One-Off</td>
+            </tr>
+        </table>
+    </h1>
+    </body>
+    </head></html>
