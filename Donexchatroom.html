@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donex</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #d9fdd3;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1 {
+      background-color: #de66f1;
+      color: rgb(122, 76, 235);
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      height: calc(100% - 120px);
+      background-color:rgb(235, 181, 235);
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .message {
+      max-width: 70%;
+      margin-bottom: 12px;
+      padding: 10px 15px;
+      border-radius: 7.5px;
+      position: relative;
+      word-wrap: break-word;
+      font-size: 15px;
+    }
+
+    .received {
+      background-color: white;
+      margin-right: auto;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+
+    .sent {
+      background-color: #d9fdd3;
+      margin-left: auto;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+
+    .message-info {
+      font-size: 11px;
+      color: #2ea5ea;
+      margin-top: 5px;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-top: 1px solid #e9edef;
+      background-color: rgb(195, 147, 225);
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 20px;
+      background-color: #85f7c9;
+      outline: none;
+      font-size: 15px;
+    }
+
+    button {
+      background-color: #3eebd7;
+      color: black;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #42efc7;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Donex Chatroom</h1>
+
+  <div class="chat-container" id="chat-container">
+  
+
+  <form id="chat-form">
+    <input type="text" id="message-input" placeholder="Message..." required />
+    <button type="submit">Send</button>
+  </form>
+</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDYV4elaT8kjvcRUiMwXFSzECduHAymIRU",
+      authDomain: "cbot-ad3c2.firebaseapp.com",
+      databaseURL: "https://cbot-ad3c2-default-rtdb.firebaseio.com",
+      projectId: "cbot-ad3c2",
+      storageBucket: "cbot-ad3c2.appspot.com",
+      messagingSenderId: "133905156401",
+      appId: "1:133905156401:web:a5c57e13f27c1963b6c810"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const chatRef = ref(db, "messages");
+
+    const username = prompt("Enter your name:");
+    const chatContainer = document.getElementById("chat-container");
+    const chatForm = document.getElementById("chat-form");
+    const messageInput = document.getElementById("message-input");
+
+  
+    chatForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const messageText = messageInput.value.trim();
+      if (messageText !== "") {
+        push(chatRef, {
+          name: username,
+          message: messageText,
+          time: new Date().toLocaleTimeString()
+        });
+        messageInput.value = "";
+      }
+    });
+
+    
+    onChildAdded(chatRef, (snapshot) => {
+      const data = snapshot.val();
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message");
+
+    e
+      if (data.name === username) {
+        messageDiv.classList.add("sent");
+      } else {
+        messageDiv.classList.add("received");
+      }
+
+      messageDiv.innerHTML = `
+        <strong>${data.name}</strong><br>
+        ${data.message}
+        <div class="message-info">${data.time}</div>
+      `;
+      chatContainer.appendChild(messageDiv);
+
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    });
+  </script>
+
+</body>
+</html>
