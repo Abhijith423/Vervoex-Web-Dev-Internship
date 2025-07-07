@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  background: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.chat-container {
+  width: 400px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.chat-box {
+  height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.message {
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.user {
+  background-color: #d1f5d3;
+  text-align: right;
+}
+
+.bot {
+  background-color: #f3d1d1;
+  text-align: left;
+}
+
+.input-container {
+  display: flex;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+    
+</style>
+<body>
+    <div class="chat-container">
+        <h1>MalharBot</h1>
+    <div class="chat-box" id="chat-box">
+        <input type="text" id="user-input" placeholder="Ask your message......">
+        <button onclick="sendMessage()">Send</button>
+        </div>
+        </div>
+        <script>
+            function sendMessage() {
+  const input = document.getElementById("user-input");
+  const message = input.value.trim();
+  if (message === "") return;
+
+  const chatBox = document.getElementById("chat-box");
+  chatBox.innerHTML += `<div class="message user">${message}</div>`;
+
+  fetch("bot.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: "message=" + encodeURIComponent(message)
+  })
+  .then(response => response.text())
+  .then(data => {
+    chatBox.innerHTML += `<div class="message bot">${data}</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+  });
+
+  input.value = "";
+}
+        </script>
+</body>
+</html>
